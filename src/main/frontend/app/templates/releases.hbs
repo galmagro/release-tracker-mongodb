@@ -1,0 +1,31 @@
+<div class="page-header">
+   <h1><img src="img/release.png"/>Releases</h1>
+</div>
+
+<div class="row">
+    <div class="pull-right" style="margin-bottom: 20px;padding-right: 15px">
+        <btn {{action "newRelease"}} class="btn btn-primary">
+            <span class="glyphicon glyphicon-plus"></span> Add release
+        </btn>
+    </div>
+</div>
+
+{{#each releaseRows as |releaseRow|}}
+<div class="row">
+    {{#each releaseRow as |release|}}
+        <div class="col-sm-3 env-panel">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <img src="img/release-small.png"/>
+                        <strong>{{#link-to "release-details" release.id}}{{release.name}}{{/link-to}}</strong>
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <p>{{truncate release.description 50}}</p>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+</div>
+{{/each}}

@@ -1,0 +1,80 @@
+<div class="page-header">
+    <h1><img src="img/environment.png"/>Dashboard</h1>
+</div>
+
+<div class="row">
+    <div class="pull-right" style="margin-bottom: 10px;padding-right: 15px">
+        <button {{action "newEnvironment"}} class="btn btn-primary">
+            <span class="glyphicon glyphicon-plus"></span> Add environment
+        </button>
+    </div>
+</div>
+
+{{#each dashboardRows as |dasboardRow|}}
+<div class="row">
+    {{#each dasboardRow as |dashboardItem|}}
+        <div class="col-sm-3 env-panel">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <img src="img/environment-small.png"/>
+                            <strong>
+                                <a href="{{{dashboardItem.environment.url}}}" target="_blank">
+                                    {{dashboardItem.environment.name}}
+                                </a>
+                            </strong>
+                            &nbsp;
+                            <small class="edit-link">
+                                {{#link-to "environment" dashboardItem.environment.id}}
+                                    <span class="glyphicon glyphicon-pencil"></span> Edit
+                                {{/link-to}}
+                            </small>
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    {{{truncate dashboardItem.environment.description 50}}}
+
+                    <p style="margin-top: 10px">
+                        {{#if dashboardItem.deployment}}
+                            {{#if dashboardItem.deployment.error}}
+
+                                <span style="font-weight: bold" class="text-danger">
+                                    <img src="img/alert-small.png"/> There was an error checking this environment
+                                </span>
+                                <br/>
+                                <small>(Last update:
+                                    {{moment-format dashboardItem.deployment.checked 'DD-MMMM-YYYY HH:mm:ss'}}
+                                    <strong>{{moment-from-now dashboardItem.deployment.checked}}</strong>)
+                                </small>
+                            {{else}}
+                            <img src="img/build-small.png"/>
+                            {{#link-to "build-details" dashboardItem.deployment.build.id}}
+                                {{#if dashboardItem.deployment.build.unallocated}}
+                                    <span style="font-weight: bold" class="text-warning">{{dashboardItem.deployment.build.number}}</span>
+                                    <span class="glyphicon glyphicon-question-sign"
+                                          title="there are no notes registered for this build">
+
+                                    </span>
+                                {{else}}
+                                    {{dashboardItem.deployment.build.number}} - {{dashboardItem.deployment.build.release.name}}
+                                {{/if}}
+
+                            {{/link-to}}
+                            <p>
+                                <small>(Deployed on:
+                                    {{moment-format dashboardItem.deployment.checked 'DD-MMMM-YYYY HH:mm:ss'}}
+                                    <strong>{{moment-from-now dashboardItem.deployment.checked}}</strong>)
+                                </small>
+                            </p>
+                            {{/if}}
+                        {{else}}
+                            <p class="text-warning">No deployment detected</p>
+                        {{/if}}
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    {{/each}}
+</div>
+{{/each}}

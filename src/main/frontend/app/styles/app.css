@@ -1,0 +1,15 @@
+.env-panel .panel-body {
+  min-height: 120px;
+}
+
+nav.navbar ul.nav a {
+  cursor: pointer;
+}
+
+h4 small.edit-link {
+    display: none;
+}
+
+h4:hover small.edit-link {
+    display: inline;
+}

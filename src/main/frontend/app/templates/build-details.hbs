@@ -1,0 +1,70 @@
+<ol class="breadcrumb">
+    <li>{{#link-to "releases"}}Releases{{/link-to}}</li>
+    {{#unless model.unallocated}}
+        <li>{{#link-to "release-details" model.release.id}}{{model.release.name}}{{/link-to}}</li>
+    {{/unless}}
+    <li>Build {{model.number}}</li>
+</ol>
+<div class="container">
+
+    <div class="page-header">
+        <h1>
+            <img src="img/build.png"/>
+            {{#if model.unallocated}}
+                <span class="text-warning">
+                    Build {{model.number}}
+                    <span class="glyphicon glyphicon-question-sign"></span>
+                </span>
+            {{else}}
+                Build {{model.number}}
+                <small>({{model.release.name}})</small>
+            {{/if}}
+        </h1>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {{{model.description}}}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 text-right">
+            <button type="button" class="btn btn-info" {{action "edit"}}>
+                <span class="glyphicon glyphicon-pencil"></span> Edit
+            </button>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Jira key</th>
+            <th>Title</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each model.issues as |issue|}}
+            <tr>
+                <td>
+                    <span class="badge" style="background-color:  #ff0000">
+                        <a style="color: white" href="https://tools.ladbrokes.com/jira/browse/{{{issue.number}}}" target="_new">
+                            {{issue.number}}
+                        </a>
+                    </span>
+                </td>
+                <td>{{issue.title}}</td>
+            </tr>
+        {{else}}
+            <tr>
+                <td colspan="2">No JIRA Tickets linked to this build.</td>
+            </tr>
+        {{/each}}
+
+        </tbody>
+    </table>
+</div>
+
+
+
+

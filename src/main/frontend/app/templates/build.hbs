@@ -1,0 +1,90 @@
+<ol class="breadcrumb">
+    <li>{{#link-to "dashboard"}}Dashboard{{/link-to}}</li>
+    <li>
+        {{#if model.unallocated}}
+            Unallocated build
+        {{else}}
+            {{#link-to "release-details" model.release.id}}{{model.release.name}}{{/link-to}}
+        {{/if}}
+    </li>
+    <li>Build {{model.number}}</li>
+</ol>
+
+<div class="row">
+    <div class="col-sm-8">
+        <form class="form-horizontal" role="form">
+            {{#if model.unallocated}}
+                {{#bs-form-group validation=releaseValidation}}
+                    <label class=" col-sm-2 control-label" for="release">Release</label>
+                    <div class="col-sm-10">
+                        {{#x-select id="release" value=release class="form-control"}}
+                            {{#x-option}}Select a release from the list ...{{/x-option}}
+                            {{#each releases as |release|}}
+                                {{#x-option value=release}}{{release.name}}{{/x-option}}
+                            {{/each}}
+                        {{/x-select}}
+
+                        {{#each model.errors.release as |error|}}
+                            <span class="help-block">{{error.message}}</span>
+                        {{/each}}
+                    </div>
+                {{/bs-form-group}}
+            {{/if}}
+
+            {{#bs-form-group validation=numberValidation}}
+                <label class="control-label col-sm-2" for="number">Build number</label>
+                <div class="col-sm-10">
+                    {{bs-input value=model.number id='number' placeholder='Enter build number'}}
+                    {{#each model.errors.number as |error|}}
+                        <span class="help-block">{{error.message}}</span>
+                    {{/each}}
+                </div>
+            {{/bs-form-group}}
+
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="desc">Description</label>
+                <div class="col-sm-10">
+                    {{tinymce-editor value=model.description}}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="issuenumber">JIRA tickets</label>
+                <div class="col-sm-10">
+                    {{input value=issueNumber class="form-control"
+                    id="issuenumber"
+                    placeholder="Enter ticket numbers separated by comma and press enter to add"
+                    enter="addIssue"}}
+
+                    {{#unless issueFound}}
+                        <span class="help-block">Issue {{notFoundNumbers}} has not been found.</span>
+                    {{/unless}}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2">&nbsp;</label>
+                <div class="col-sm-10">
+                        {{#each model.issues as |issue|}}
+                            <span class="badge" style="background-color:  #ff0000" title="{{{issue.title}}}">
+                                <a style="color: white" href="https://tools.ladbrokes.com/jira/browse/{{{issue.number}}}" target="_new">
+                                    {{issue.number}}
+                                </a>
+                                <span style="cursor: pointer" class="glyphicon glyphicon-remove-sign"
+                                    {{action "removeIssue" issue.number}}></span>
+                                <!-- insert remove link -->
+                            </span>
+                        {{else}}
+                                <p class="bg-info text-info">No JIRA Tickets linked to this build.
+                                    Please enter the ticket number in the box above and press enter.</p>
+                        {{/each}}
+                </div>
+            </div>
+            <div class="form-group pull-right">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-primary" {{action "save"}}>Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

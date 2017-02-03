@@ -1,0 +1,53 @@
+<ol class="breadcrumb">
+    <li>{{#link-to "releases"}}Releases{{/link-to}}</li>
+    <li>{{model.name}}</li>
+</ol>
+<div class="container">
+    <div class="page-header">
+        <h1><img src="img/release.png"/> {{model.name}}</h1>
+    </div>
+
+
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {{{model.description}}}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 text-right">
+            <button type="button" class="btn btn-info" {{action "edit"}}>
+                <span class="glyphicon glyphicon-pencil"></span> Edit
+            </button>
+            <button type="button" class="btn btn-default" {{action "newBuild"}}>
+                <span class="glyphicon glyphicon-plus"></span> Add build
+            </button>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Build num.</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each model.builds as |build|}}
+            <tr>
+                <td><img src="img/build-small.png"/> {{#link-to "build-details" build.id}}{{build.number}}{{/link-to}}</td>
+                <td>{{{truncate build.description 100}}}</td>
+            </tr>
+        {{else}}
+            <tr>
+                <td colspan="2">There are no builds in this release</td>
+            </tr>
+        {{/each}}
+
+        </tbody>
+    </table>
+</div>
+
+
+
